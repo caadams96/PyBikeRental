@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>47b99ec9-2a77-4c51-b2c3-c12d4b77387d</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PyBikeRental.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -27,7 +27,7 @@
     <Compile Include="classes\Customer.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PyBikeRental.py" />
+    <Compile Include="main.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="classes\" />
