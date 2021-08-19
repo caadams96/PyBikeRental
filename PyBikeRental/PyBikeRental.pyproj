@@ -21,10 +21,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="classes\BikeRental.py">
+    <Compile Include="classes\bikerental.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="classes\Customer.py">
+    <Compile Include="classes\customer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
