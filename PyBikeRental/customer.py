@@ -1,8 +1,11 @@
 import datetime
 from datetime import datetime, timedelta
+    
 
 class Customer(object):
-    """Functions to create a new customer and make a bike rental"""
+    """description of class"""
+
+
     def __init__(self):
         """
         Our constructor method which instantiates various customer objects.
@@ -41,4 +44,5 @@ class Customer(object):
             return self.rentalTime, self.rentalBasis, self.bikes  
         else:
             return 0,0,0
-
+  
+        

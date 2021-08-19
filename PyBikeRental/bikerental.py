@@ -1,8 +1,9 @@
 import datetime
 from datetime import datetime, timedelta
-
+    
 class BikeRental(object):
-    """Functions to set up and get data from BikeRental Shop """
+    """description of class"""
+
 
     def __init__(self,stock=0):
         """
@@ -118,4 +119,3 @@ class BikeRental(object):
         else:
             print("Are you sure you rented a bike with us?")
             return None
-  
