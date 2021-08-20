@@ -5,17 +5,26 @@ class BikeRental(object):
     """description of class"""
 
 
-    def __init__(self,stock=0):
+    def __init__(self,MountainBikes=0,RoadBikes=0,TouringBikes=0):
         """
         Our constructor class that instantiates bike rental shop.
         """
-        self.stock = stock 
+        self.MountainBikes = MountainBikes
+        self.RoadBikes = RoadBikes
+        self.TouringBikes =  TouringBikes 
+        self.stock = self.MountainBikes + self.RoadBikes + self.TouringBikes
 
     def displaystock(self):
         """
         Displays the bikes currently available for rent in the shop.
         """
-        print("We have currently {} bikes available to     rent.".format(self.stock))
+        print("\n")
+        print("We have currently {} bikes available to rent.".format(self.stock))
+        print(f""" 
+Mountain Model: {format(self.MountainBikes)}                   
+Road Model: {format(self.RoadBikes)}                
+Touring Model: {format(self.TouringBikes)}
+        """)
         return self.stock
 
     def rentBikeOnHourlyBasis(self, n):

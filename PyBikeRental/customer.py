@@ -1,27 +1,28 @@
 import datetime
 from datetime import datetime, timedelta
     
-
+last_id = 0
 class Customer(object):
     """description of class"""
 
 
-    def __init__(self):
+    def __init__(self,Name):
         """
         Our constructor method which instantiates various customer objects.
         """
-        
+        self.Name = Name 
         self.bikes = 0
         self.rentalBasis = 0
         self.rentalTime = 0
         self.bill = 0
-    
+        last_id += 1
+        self.id = last_id
     def requestBike(self):
         """
         Takes a request from the customer for the number of bikes.
         """
                       
-        bikes = input("How many bikes would you like to rent?")
+        bikes = input("How many bikes would you like to rent? ")
         
         # implement logic for invalid input
         try:
