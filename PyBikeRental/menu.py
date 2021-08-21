@@ -432,4 +432,5 @@ class RentalMenu(Menu):
             if bikes > mBikes or rBikes or tBikes:
                 self.customers.pop()
 
+        
 
