@@ -12,7 +12,7 @@ class BikeRental(object):
         self.MountainBikes = MountainBikes
         self.RoadBikes = RoadBikes
         self.TouringBikes =  TouringBikes 
-        self.stock = self.MountainBikes + self.RoadBikes + self.TouringBikes
+        self.stock = MountainBikes + RoadBikes + TouringBikes
 
         self.bikeModel = 0
 
@@ -58,10 +58,15 @@ Touring Model: {format(self.TouringBikes)}
                 print("We hope that you enjoy our service.")
                 if model == "MountainBike":
                     self.MountainBikes -= n
+                    self.stock -= n
                 elif model == "RoadBike":
                     self.RoadBikes -= n
+                    self.stock -= n
+
                 elif model == "TouringBike":
                     self.TouringBikes -= n
+                    self.stock -= n
+
         elif  model == "RoadBike":
             if n > rBikeStock:
                 print("Sorry! We have currently {} road bikes available to rent.".format(self.RoadBikes))
@@ -74,10 +79,16 @@ Touring Model: {format(self.TouringBikes)}
                 print("We hope that you enjoy our service.")
                 if model == "MountainBike":
                     self.MountainBikes -= n
+                    self.stock -= n
+
                 elif model == "RoadBike":
                     self.RoadBikes -= n
+                    self.stock -= n
+
                 elif model == "TouringBike":
                     self.TouringBikes -= n
+                    self.stock -= n
+
         elif  model == "TouringBike":
             if n > tBikeStock:
                 print("Sorry! We have currently {} touring bikes available to rent.".format(self.TouringBikes))
@@ -89,10 +100,18 @@ Touring Model: {format(self.TouringBikes)}
                 print("We hope that you enjoy our service.")
                 if model == "MountainBike":
                     self.MountainBikes -= n
+                    self.stock -= n
+
                 elif model == "RoadBike":
                     self.RoadBikes -= n
+                    self.stock -= n
+
+
                 elif model == "TouringBike":
                     self.TouringBikes -= n
+                    self.stock -= n
+
+
 
         # rent the bikes        
   
@@ -127,10 +146,19 @@ Touring Model: {format(self.TouringBikes)}
                 print("We hope that you enjoy our service.")
                 if model == "MountainBike":
                     self.MountainBikes -= n
+                    self.stock -= n
+
+
                 elif model == "RoadBike":
                     self.RoadBikes -= n
+                    self.stock -= n
+
+
                 elif model == "TouringBike":
                     self.TouringBikes -= n
+                    self.stock -= n
+
+
                 return now
         elif  model == "RoadBike":
             if n > tBikeStock:
@@ -143,10 +171,19 @@ Touring Model: {format(self.TouringBikes)}
                 print("We hope that you enjoy our service.")
                 if model == "MountainBike":
                     self.MountainBikes -= n
+                    self.stock -= n
+
+
                 elif model == "RoadBike":
                     self.RoadBikes -= n
+                    self.stock -= n
+
+
                 elif model == "TouringBike":
                     self.TouringBikes -= n
+                    self.stock -= n
+
+
                 return now
         elif  model == "TouringBike":
             if n > tBikeStock:
@@ -159,10 +196,17 @@ Touring Model: {format(self.TouringBikes)}
                 print("We hope that you enjoy our service.")
                 if model == "MountainBike":
                     self.MountainBikes -= n
+                    self.stock -= n
+
+
                 elif model == "RoadBike":
+                    self.stock -= n
                     self.RoadBikes -= n
+
                 elif model == "TouringBike":
+                    self.stock -= n
                     self.TouringBikes -= n
+
                 return now
         
 
@@ -191,10 +235,16 @@ Touring Model: {format(self.TouringBikes)}
                 print("We hope that you enjoy our service.")
                 if model == "MountainBike":
                     self.MountainBikes -= n
+                    self.stock -= n
+
                 elif model == "RoadBike":
                     self.RoadBikes -= n
+                    self.stock -= n
+
                 elif model == "TouringBike":
                     self.TouringBikes -= n
+                    self.stock -= n
+
                 return now
     
         elif  model == "RoadBike":
@@ -208,10 +258,16 @@ Touring Model: {format(self.TouringBikes)}
                 print("We hope that you enjoy our service.")
                 if model == "MountainBike":
                     self.MountainBikes -= n
+                    self.stock -= n
+
                 elif model == "RoadBike":
                     self.RoadBikes -= n
+                    self.stock -= n
+
                 elif model == "TouringBike":
                     self.TouringBikes -= n
+                    self.stock -= n
+
                 return now
     
         elif  model == "TouringBike":
@@ -225,10 +281,16 @@ Touring Model: {format(self.TouringBikes)}
                 print("We hope that you enjoy our service.")
                 if model == "MountainBike":
                     self.MountainBikes -= n
+                    self.stock -= n
+
                 elif model == "RoadBike":
                     self.RoadBikes -= n
+                    self.stock -= n
+
                 elif model == "TouringBike":
                     self.TouringBikes -= n
+                    self.stock -= n
+
                 return now
     
 

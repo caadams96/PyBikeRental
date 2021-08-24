@@ -173,7 +173,7 @@ class RentalMenu(Menu):
     def __init__(self,Shop):
         global customers
         self.customers = customers
-        self.id = len(customers)
+        self.id = len(self.customers) 
         self.Shop = Shop
         self.choices = {
             "1": self.NewCustomerRental,
@@ -352,7 +352,7 @@ class RentalMenu(Menu):
         blnSwitch = bool(True)  
         while blnSwitch == bool(True): 
             customer.requestBike()
-            if customer.bikes > 0:
+            if self.customers[self.id - 1].bikes > 0:
                 blnSwitch = False
            
 
@@ -360,26 +360,33 @@ class RentalMenu(Menu):
         customer = self.customers[self.id - 1]
         blnSwitch = bool(True)
         while blnSwitch == bool(True):
-            customer.requestRentalTime()
+            self.customers[self.id - 1].requestRentalTime()
             if self.customers[self.id - 1].customerRentalTime > 0:
                 blnSwitch = False      
             
  
 
     def ShowCustomers(self):
+        "test to see if object is appending to list"
+        print(len(customers)) 
+        customer = self.customers[self.id - 1].name
         print(len(self.customers))
+        print(f"{customer}.")
+       
 
     #/////////////////////////////////////////
     def NewCustomerRental(self):
        
         #Get Name and create new Customer
         print("\n")
+        global customers
         name = input("Please Enter Name For Bike Rental: ")
-        
         print("___________________________________")
-        customers.append(Customer(name))
+        NewCustomer = Customer(name)
+        customers.append(NewCustomer)
         customer = customers[self.id].name
-        print(f"Total Customers: {self.id}")
+        print(len(self.customers))
+
         print("\n")
         print(f"Hey, {customer}. Lets get you set up to rent a bike.")
         print("____________________________________________________")
@@ -410,8 +417,8 @@ class RentalMenu(Menu):
     def FinalizeRental(self):
 
         customer = self.customers[self.id]
-        bikes = customer.bikes        
-        model = customer.bikeModelRented
+        bikes = self.customers[self.id].bikes   
+        model = self.customers[self.id].bikeModelRented
         
         mBikes = self.Shop.MountainBikes
         rBikes = self.Shop.RoadBikes
@@ -433,4 +440,9 @@ class RentalMenu(Menu):
                 self.customers.pop()
 
         
+
+    def BikeReturn(self):
+        ID = customers[1].name
+        CustomerID = self.customers[self.id].id
+        CustomerName = self.customers[self.id].name
 

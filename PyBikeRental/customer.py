@@ -22,9 +22,13 @@ class Customer(object):
         global last_id
         last_id += 1
         self.id = last_id
+        global customers
+        self.customers = []
         #for validation for rental menu class function GetRentalTime
         self.customerRentalTime = 0
 
+    def getCustomers(self,NewCustomer):
+        self.customers.append(NewCustomer)
     def getBikeModel(self,choice):
         self.bikeModelRented = choice
 
