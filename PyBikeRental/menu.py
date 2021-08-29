@@ -3,6 +3,7 @@ import datetime
 from datetime import datetime, timedelta
 from bikerental import BikeRental
 from customer import Customer
+sys.setrecursionlimit(1500)
 #/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #WORK IN PROGRESS
 #/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,11 +156,6 @@ class StartupMenu(Menu):
 
 
 
-
-
-
-
-
 #/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #************************************************
@@ -175,14 +171,14 @@ class RentalMenu(Menu):
         self.customers = customers
         self.id = len(self.customers) 
         self.Shop = Shop
+        self.baseMenu = Menu
+       
         self.choices = {
             "1": self.NewCustomerRental,
             "3": self.ShowInventory,
-            "2": self.ShowCustomers ,
-            "4": self.Exit
-            
-           
-            }      
+            "2": self.rentalReturn,
+            "4": self.CloseShop,
+               }      
         self.models = {
             "1": self.MountainBike,
             "2": self.RoadBike,
@@ -214,9 +210,7 @@ class RentalMenu(Menu):
 |4. End of Day          |
 |_______________________|
 
-"""
-            
-    )
+""")
 
     def BikeModels(self):
         print(""" 
@@ -246,9 +240,11 @@ class RentalMenu(Menu):
 
 """)
 
-    #/////////////////////////////////////////////////
+    #************************************************
+    #//Function ShowInventory
+    #
+    #************************************************ 
     def RentalHourlyBasis(self):
-
         choice = 1
         self.customers[self.id].getRentalBasis(choice)
   
@@ -276,7 +272,6 @@ class RentalMenu(Menu):
         print(f"You Chose This Rental Basis: {basis}")
 
 
-
     def GetRentalBasis(self):
         print("\n")
         print("Ok now we need your desired Rental Basis")
@@ -300,7 +295,10 @@ class RentalMenu(Menu):
 
         return 
 
-    #//////////////////////////////////////////
+    #************************************************
+    #//Function ShowInventory
+    #
+    #************************************************ 
     def MountainBike(self): 
         choice = "MountainBike"
         self.customers[self.id].getBikeModel(choice)
@@ -321,7 +319,6 @@ class RentalMenu(Menu):
         model = self.customers[self.id].bikeModelRented
         print("\n")
         print(f"You Chose This Model: {model}")
-
 
 
     def GetBikeModel(self):
@@ -345,36 +342,36 @@ class RentalMenu(Menu):
             RentalMenu(self.Shop).Run()
 
         return 
-
+    #************************************************
+    #//Function ShowInventory
+    #
+    #************************************************ 
     def GetNumberOfBikes(self):
         #self.id - 1 = Customer index 
-        customer = self.customers[self.id - 1]
+        customer = self.customers[self.id]
         blnSwitch = bool(True)  
         while blnSwitch == bool(True): 
             customer.requestBike()
-            if self.customers[self.id - 1].bikes > 0:
+            if self.customers[self.id].bikes > 0:
                 blnSwitch = False
-           
+    #************************************************
+    #//Function ShowInventory
+    #
+    #************************************************         
 
     def GetRentalTime(self):
-        customer = self.customers[self.id - 1]
+        customer = self.customers[self.id ]
         blnSwitch = bool(True)
         while blnSwitch == bool(True):
-            self.customers[self.id - 1].requestRentalTime()
-            if self.customers[self.id - 1].customerRentalTime > 0:
+            self.customers[self.id].requestRentalTime()
+            if self.customers[self.id].customerRentalTime > 0:
                 blnSwitch = False      
             
- 
 
-    def ShowCustomers(self):
-        "test to see if object is appending to list"
-        print(len(customers)) 
-        customer = self.customers[self.id - 1].name
-        print(len(self.customers))
-        print(f"{customer}.")
-       
-
-    #/////////////////////////////////////////
+    #************************************************
+    #//Function ShowInventory
+    #
+    #************************************************ 
     def NewCustomerRental(self):
        
         #Get Name and create new Customer
@@ -384,7 +381,9 @@ class RentalMenu(Menu):
         print("___________________________________")
         NewCustomer = Customer(name)
         customers.append(NewCustomer)
+
         customer = customers[self.id].name
+        
         print(len(self.customers))
 
         print("\n")
@@ -411,38 +410,154 @@ class RentalMenu(Menu):
         self.Shop.displaystock()
         input("Press [Enter] To Go Back To The Main Menu")
         RentalMenu(self.Shop).Run()
-
   
 
-    def FinalizeRental(self):
 
+    def Validate__Input(int_Input):
+        try:
+            int_Input = int(int_Input)
+            if(int_Input >= 0):
+                return int_Input
+            else:
+                print("Input Must Be 0 or More")
+        except ValueError:
+            int_Input = int(0)
+            print("Input Must be Numeric")
+        
+    #************************************************
+    #// 
+    #
+    #************************************************ 
+    def CloseShop(self):
+      ShopIncome = "${:,.2f}".format(self.Shop.income)
+      bikesRented = self.Shop.bikesRented
+      Customers = len(self.customers)
+      #  
+       #self.Shop.showIncome()
+      print(f"Todays Income: {ShopIncome}")
+      print(f"Number of Bikes Rented Today: {bikesRented}")
+      print(f"Number of Customers Today {Customers}")
+
+      self.Exit()
+        
+    #************************************************
+    #// 
+    #
+    #************************************************ 
+    def rentalReturn(self):
+
+       request = [0,0,0]
+       
+       print(f"\n")
+       print("Enter Your Customer Information To Return Bike")
+
+       while True:
+           try:
+                Name = str(input("Enter Your Name: "))
+                c_ID = int(input("Enter Your ID: "))
+                break
+           except ValueError:
+               print("Customer ID must be a number")
+               print("\n")
+
+           
+       for customers in self.customers:
+           numbers = []
+           if customers.name == Name and customers.id == c_ID:
+               input("Press [Enter] to Provide Rental Ticket and Return Bike")
+               print(customers.Ticket)
+
+               wordList = customers.Ticket.split()
+               TicketInformation = [wordList[6], wordList[9], wordList[12], wordList[17], wordList[20], wordList[23], wordList[24]]
+               #
+               wordListLength = len(wordList)
+               #
+               name = str(TicketInformation[0])
+               id = int(TicketInformation[1])
+               print(f"\n")
+               print(f"Customer {name} Found with Customer ID: {id}")
+
+               date1 = (TicketInformation[5].replace("-", " "))
+               date2 = (TicketInformation[6]).replace(":" , " ")
+               date3 = date2.replace(".", " ")
+               
+               date1List = date1.split()
+               date2List = date2.split()
+               date3List = date3.split()
+               
+               for i in range(0, len(date1List)):
+                   date1List[i] = int(date1List[i])
+               for i in range(0, len(date3List)):
+                   date3List[i] = int(date3List[i])
+
+               realDateTime = datetime(year=date1List[0],month=date1List[1],day=date1List[2],hour=date3List[0],minute=date3List[1],second=date3List[2],microsecond=date3List[3])
+               rentalbasis = int(TicketInformation[4])
+               bikes = int(TicketInformation[3])
+               model = str(TicketInformation[2])
+               request = [realDateTime,rentalbasis,bikes,model]
+               self.Shop.returnBike(request)
+               #
+
+       
+       input("Press [Enter] To Go Back To The Main Menu")
+       RentalMenu(self.Shop).Run()
+
+
+    #************************************************
+    #//Function FinalizeRental
+    #
+    #************************************************ 
+    def FinalizeRental(self):
+        global customers
         customer = self.customers[self.id]
+
+        customername = self.customers[self.id].name
+        ID = self.customers[self.id].id
         bikes = self.customers[self.id].bikes   
         model = self.customers[self.id].bikeModelRented
+        basis = self.customers[self.id].rentalBasis
+        hours = self.customers[self.id].rentalTime
+        ticket = f""" 
+_______________________________________________
+-Rental Ticket                                  
+-----------------------------------------------
+-Customer Name: {customername}           
+-Customer ID: {ID}                     
+-Model Rented: {model}                     
+-Number of Bikes Rented: {bikes}  
+-Rental Basis: {basis}
+-Rental Time: {hours}
+________________________________________________
         
-        mBikes = self.Shop.MountainBikes
-        rBikes = self.Shop.RoadBikes
-        tBikes = self.Shop.TouringBikes
-
-
+        """
+        self.customers[self.id].Ticket = ticket
         if customer.rentalBasis == 1:
-             self.Shop.rentBikeOnHourlyBasis(bikes,model)
-             #if a fail happens in the function this will get rid of the customer in list
-             if bikes > mBikes or rBikes or tBikes:
+             if self.Shop.rentBikeOnHourlyBasis(bikes,model) == True:
+                print("pop")
                 self.customers.pop()
+             else:
+                print("Here's Your Rental Ticket")
+
+                print(ticket)
         elif customer.rentalBasis == 2:
-             self.Shop.rentBikeOnDailyBasis(bikes,model)
-             if bikes > mBikes or rBikes or tBikes:
+             if self.Shop.rentBikeOnHourlyBasis(bikes,model) == True:
+                print("pop")
                 self.customers.pop()
+             else:
+                print("Here's Your Rental Ticket")
+
+                print(ticket)
+
         elif customer.rentalBasis == 3:
-            self.Shop.rentBikeOnWeeklyBasis(bikes,model)
-            if bikes > mBikes or rBikes or tBikes:
+            if self.Shop.rentBikeOnHourlyBasis(bikes,model) == True:
+                print("pop")
                 self.customers.pop()
+            else:
+                print("Here's Your Rental Ticket")
+                print(ticket)
 
-        
 
-    def BikeReturn(self):
-        ID = customers[1].name
-        CustomerID = self.customers[self.id].id
-        CustomerName = self.customers[self.id].name
+
+
+       
 

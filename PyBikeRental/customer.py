@@ -1,34 +1,33 @@
 import datetime
 from datetime import datetime, timedelta
 from bikerental import BikeRental
-last_id = 0
+last_id = int(0)
 customers = []
 
 class Customer(object):
     """description of class"""
 
 
-    def __init__(self,name):
+    def __init__(self,name:str):
         """
         Our constructor method which instantiates various customer objects.
         """
         self.bikeModelRented = ""
         self.bikes = 0
         self.rentalBasis = 0
-        self.rentalTime = 0
+        self.rentalTime = datetime
         self.bill = 0
         #Added variables
         self.name = name
         global last_id
         last_id += 1
-        self.id = last_id
-        global customers
-        self.customers = []
+        self.id = int(last_id)
+        self.Ticket = ""
+
         #for validation for rental menu class function GetRentalTime
         self.customerRentalTime = 0
 
-    def getCustomers(self,NewCustomer):
-        self.customers.append(NewCustomer)
+
     def getBikeModel(self,choice):
         self.bikeModelRented = choice
 
@@ -50,14 +49,18 @@ class Customer(object):
         else:
             if self.rentalBasis == 1:
                 rentTime = customerRentalTime
-            elif self.rentalBasis == 2 or self.rentalBasis == 3:
+                rentalTime = datetime.now() + timedelta(hours=-rentTime)
+                self.rentalTime = rentalTime
+            elif self.rentalBasis == 2:
                 rentTime = customerRentalTime
+                rentalTime = datetime.now() + timedelta(days=-rentTime)
+                self.rentalTime = rentalTime
+            elif self.rentalBasis == 3:
+                rentTime = customerRentalTime
+                rentalTime = datetime.now() + timedelta(weeks=-rentTime)
+                self.rentalTime = rentalTime
             self.customerRentalTime += 1
 
-
-
-        rentalTime = datetime.now() + timedelta(rentTime)
-        self.rentalTime = rentalTime
 
         return self.rentalTime
 

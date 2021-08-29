@@ -14,7 +14,11 @@ class BikeRental(object):
         self.TouringBikes =  TouringBikes 
         self.stock = MountainBikes + RoadBikes + TouringBikes
 
-        self.bikeModel = 0
+        self.bikeModel = ""
+        income = 0
+        self.income = income
+        
+        self.bikesRented = 0
 
     def displaystock(self):
         """
@@ -29,6 +33,10 @@ Road Model: {format(self.RoadBikes)}
 Touring Model: {format(self.TouringBikes)}
         """)
         return self.stock
+
+    #/////////////////////////////////////////////////////////////////
+    #Function
+    #/////////////////////////////////////////////////////////////////
 
     def rentBikeOnHourlyBasis(self, n, model):
         """
@@ -45,80 +53,46 @@ Touring Model: {format(self.TouringBikes)}
         tBikeStock = self.TouringBikes
         if n <= 0:
             print("Number of bikes should be positive!")
-            return None
+            return True
         elif  model == "MountainBike":
             if n > mBikeStock:
                 print("Sorry! We have currently {} mountain bikes available to rent.".format(self.MountainBikes))
-                
-                return None  
+                return True  
             else:
-                now = datetime.now()                      
-                print("You have rented {} bike(s) on hourly basis today at {} hours.".format(n,now.hour))
-                print("You will be charged $5 for each hour per bike.")
-                print("We hope that you enjoy our service.")
-                if model == "MountainBike":
-                    self.MountainBikes -= n
-                    self.stock -= n
-                elif model == "RoadBike":
-                    self.RoadBikes -= n
-                    self.stock -= n
-
-                elif model == "TouringBike":
-                    self.TouringBikes -= n
-                    self.stock -= n
+                self.MountainBikes -= n
+                self.stock -= n
+                self.bikesRented += n
 
         elif  model == "RoadBike":
             if n > rBikeStock:
                 print("Sorry! We have currently {} road bikes available to rent.".format(self.RoadBikes))
-                
-                return None 
+                return True 
             else:
-                now = datetime.now()                      
-                print("You have rented {} bike(s) on hourly basis today at {} hours.".format(n,now.hour))
-                print("You will be charged $5 for each hour per bike.")
-                print("We hope that you enjoy our service.")
-                if model == "MountainBike":
-                    self.MountainBikes -= n
-                    self.stock -= n
-
-                elif model == "RoadBike":
-                    self.RoadBikes -= n
-                    self.stock -= n
-
-                elif model == "TouringBike":
-                    self.TouringBikes -= n
-                    self.stock -= n
+                self.RoadBikes -= n
+                self.stock -= n
+                self.bikesRented += n
 
         elif  model == "TouringBike":
             if n > tBikeStock:
                 print("Sorry! We have currently {} touring bikes available to rent.".format(self.TouringBikes))
-                return None
+                return True
             else:
-                now = datetime.now()                      
-                print("You have rented {} bike(s) on hourly basis today at {} hours.".format(n,now.hour))
-                print("You will be charged $5 for each hour per bike.")
-                print("We hope that you enjoy our service.")
-                if model == "MountainBike":
-                    self.MountainBikes -= n
-                    self.stock -= n
+                self.TouringBikes -= n
+                self.stock -= n
+                self.bikesRented += n
 
-                elif model == "RoadBike":
-                    self.RoadBikes -= n
-                    self.stock -= n
+    
+        now = datetime.now()                      
+        print("You have rented {} {}(s) on hourly basis today at {} hours.".format(n,model,now.hour))
+        print("You will be charged $5 for each hour per bike.")
+        print("We hope that you enjoy our service.")
 
 
-                elif model == "TouringBike":
-                    self.TouringBikes -= n
-                    self.stock -= n
+    #/////////////////////////////////////////////////////////////////
+    #Function
+    #/////////////////////////////////////////////////////////////////
 
 
-
-        # rent the bikes        
-  
-
-
-            return now      
-     
     def rentBikeOnDailyBasis(self, n, model):
         """
         Rents a bike on daily basis to a customer.
@@ -140,78 +114,39 @@ Touring Model: {format(self.TouringBikes)}
                 print("Sorry! We have currently {} mountain bikes available to rent.".format(self.MountainBikes))
                 return None  
             else:
-                now = datetime.now()                      
-                print("You have rented {} bike(s) on daily basis today at {} hours.".format(n, now.hour))
-                print("You will be charged $20 for each day per bike.")
-                print("We hope that you enjoy our service.")
-                if model == "MountainBike":
-                    self.MountainBikes -= n
-                    self.stock -= n
+                self.MountainBikes -= n
+                self.stock -= n
+                self.bikesRented += n
 
-
-                elif model == "RoadBike":
-                    self.RoadBikes -= n
-                    self.stock -= n
-
-
-                elif model == "TouringBike":
-                    self.TouringBikes -= n
-                    self.stock -= n
-
-
-                return now
         elif  model == "RoadBike":
-            if n > tBikeStock:
-                print("Sorry! We have currently {}road  bikes available to rent.".format(self.RoadBikes))
-                return None    
+            if n > rBikeStock:
+                print("Sorry! We have currently {} road bikes available to rent.".format(self.RoadBikes))
+                return None 
             else:
-                now = datetime.now()                      
-                print("You have rented {} bike(s) on daily basis today at {} hours.".format(n, now.hour))
-                print("You will be charged $20 for each day per bike.")
-                print("We hope that you enjoy our service.")
-                if model == "MountainBike":
-                    self.MountainBikes -= n
-                    self.stock -= n
+                self.RoadBikes -= n
+                self.stock -= n
+                self.bikesRented += n
 
-
-                elif model == "RoadBike":
-                    self.RoadBikes -= n
-                    self.stock -= n
-
-
-                elif model == "TouringBike":
-                    self.TouringBikes -= n
-                    self.stock -= n
-
-
-                return now
         elif  model == "TouringBike":
             if n > tBikeStock:
                 print("Sorry! We have currently {} touring bikes available to rent.".format(self.TouringBikes))
-                return None 
+                return None
             else:
-                now = datetime.now()                      
-                print("You have rented {} bike(s) on daily basis today at {} hours.".format(n, now.hour))
-                print("You will be charged $20 for each day per bike.")
-                print("We hope that you enjoy our service.")
-                if model == "MountainBike":
-                    self.MountainBikes -= n
-                    self.stock -= n
+                self.TouringBikes -= n
+                self.stock -= n
+                self.bikesRented += n
 
 
-                elif model == "RoadBike":
-                    self.stock -= n
-                    self.RoadBikes -= n
+    
+        now = datetime.now()                      
+        print("You have rented {} {}(s) on hourly basis today at {} hours.".format(n,model,now.hour))
+        print("You will be charged $5 for each hour per bike.")
+        print("We hope that you enjoy our service.")
 
-                elif model == "TouringBike":
-                    self.stock -= n
-                    self.TouringBikes -= n
+    #/////////////////////////////////////////////////////////////////
+    #Function
+    #/////////////////////////////////////////////////////////////////
 
-                return now
-        
-
-                return now
-        
     def rentBikeOnWeeklyBasis(self, n, model):
         """
         Rents a bike on weekly basis to a customer.
@@ -229,75 +164,42 @@ Touring Model: {format(self.TouringBikes)}
                 print("Sorry! We have currently {} mountain bikes available to rent.".format(self.MountainBikes))
                 return None  
             else:
-                now = datetime.now()
-                print("You have rented {} bike(s) on weekly basis today at {} hours.".format(n, now.hour))
-                print("You will be charged $60 for each week per bike.")
-                print("We hope that you enjoy our service.")
-                if model == "MountainBike":
-                    self.MountainBikes -= n
-                    self.stock -= n
+                self.MountainBikes -= n
+                self.stock -= n
+                self.bikesRented += n
 
-                elif model == "RoadBike":
-                    self.RoadBikes -= n
-                    self.stock -= n
 
-                elif model == "TouringBike":
-                    self.TouringBikes -= n
-                    self.stock -= n
-
-                return now
-    
         elif  model == "RoadBike":
             if n > rBikeStock:
                 print("Sorry! We have currently {} road bikes available to rent.".format(self.RoadBikes))
-                return None    
+                return None 
             else:
-                now = datetime.now()
-                print("You have rented {} bike(s) on weekly basis today at {} hours.".format(n, now.hour))
-                print("You will be charged $60 for each week per bike.")
-                print("We hope that you enjoy our service.")
-                if model == "MountainBike":
-                    self.MountainBikes -= n
-                    self.stock -= n
+                self.RoadBikes -= n
+                self.stock -= n
+                self.bikesRented += n
 
-                elif model == "RoadBike":
-                    self.RoadBikes -= n
-                    self.stock -= n
 
-                elif model == "TouringBike":
-                    self.TouringBikes -= n
-                    self.stock -= n
-
-                return now
-    
         elif  model == "TouringBike":
             if n > tBikeStock:
                 print("Sorry! We have currently {} touring bikes available to rent.".format(self.TouringBikes))
-                return None     
+                return None
             else:
-                now = datetime.now()
-                print("You have rented {} bike(s) on weekly basis today at {} hours.".format(n, now.hour))
-                print("You will be charged $60 for each week per bike.")
-                print("We hope that you enjoy our service.")
-                if model == "MountainBike":
-                    self.MountainBikes -= n
-                    self.stock -= n
-
-                elif model == "RoadBike":
-                    self.RoadBikes -= n
-                    self.stock -= n
-
-                elif model == "TouringBike":
-                    self.TouringBikes -= n
-                    self.stock -= n
-
-                return now
-    
-
-
+                self.TouringBikes -= n
+                self.stock -= n
+                self.bikesRented += n
 
     
-    
+        now = datetime.now()  
+        
+        print("You have rented {} {}(s) on hourly basis today at {} hours.".format(n,model,now.hour))
+        print("You will be charged $5 for each hour per bike.")
+        print("We hope that you enjoy our service.")
+
+
+    def showIncome(self):
+        
+        print(f"income {self.income}")
+
     def returnBike(self, request):
         """
         1. Accept a rented bike from a customer
@@ -306,30 +208,41 @@ Touring Model: {format(self.TouringBikes)}
         """
        
         # extract the tuple and initiate bill
-        rentalTime, rentalBasis, numOfBikes = request
+        rentalTime, rentalBasis, numOfBikes, bikeModel = request
         bill = 0
         # issue a bill only if all three parameters are not null!
-        if rentalTime and rentalBasis and numOfBikes:
-            self.stock += numOfBikes
+        if rentalTime and rentalBasis and numOfBikes and bikeModel:
+            if bikeModel == "MountainBike":
+                self.MountainBikes += numOfBikes
+                self.stock += numOfBikes
+            elif bikeModel == "RoadBike":
+                self.RoadBikes += numOfBikes
+                self.stock += numOfBikes
+            elif bike == "TouringBike":
+                self.TouringBikes += numOfBikes
+                self.stock += numOfBikes
+
             now = datetime.now()
             rentalPeriod = now - rentalTime
-        
+            
             # hourly bill calculation
             if rentalBasis == 1:
                 bill = round(rentalPeriod.seconds / 3600) * 5 * numOfBikes
-                
+                self.income += bill
             # daily bill calculation
             elif rentalBasis == 2:
                 bill = round(rentalPeriod.days) * 20 * numOfBikes
-                
+                self.income += bill
             # weekly bill calculation
             elif rentalBasis == 3:
                 bill = round(rentalPeriod.days / 7) * 60 * numOfBikes
+                self.income += bill
             
             # family discount calculation
             if (3 <= numOfBikes <= 5):
                 print("You are eligible for Family rental promotion of 30% discount")
                 bill = bill * 0.7
+                self.income += bill
             print("Thanks for returning your bike. Hope you enjoyed our service!")
             print("That would be ${}".format(bill))
             return bill
