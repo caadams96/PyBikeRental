@@ -13,6 +13,7 @@ class BikeRental(object):
         self.RoadBikes = RoadBikes
         self.TouringBikes =  TouringBikes 
         self.stock = MountainBikes + RoadBikes + TouringBikes
+        self.StartUpInventory = self.stock
 
         self.bikeModel = ""
         income = 0
@@ -139,8 +140,9 @@ Touring Model: {format(self.TouringBikes)}
 
     
         now = datetime.now()                      
-        print("You have rented {} {}(s) on hourly basis today at {} hours.".format(n,model,now.hour))
-        print("You will be charged $5 for each hour per bike.")
+
+        print("You have rented {} {}(s) on daily basis today at {} hours.".format(n, model,now.hour))
+        print("You will be charged $20 for each day per bike.")
         print("We hope that you enjoy our service.")
 
     #/////////////////////////////////////////////////////////////////
@@ -190,11 +192,9 @@ Touring Model: {format(self.TouringBikes)}
 
     
         now = datetime.now()  
-        
-        print("You have rented {} {}(s) on hourly basis today at {} hours.".format(n,model,now.hour))
-        print("You will be charged $5 for each hour per bike.")
+        print("You have rented {} {}(s) on weekly basis today at {} hours.".format(n,model,now.hour))
+        print("You will be charged $60 for each week per bike.")
         print("We hope that you enjoy our service.")
-
 
     def showIncome(self):
         
@@ -218,7 +218,7 @@ Touring Model: {format(self.TouringBikes)}
             elif bikeModel == "RoadBike":
                 self.RoadBikes += numOfBikes
                 self.stock += numOfBikes
-            elif bike == "TouringBike":
+            elif bikeModel == "TouringBike":
                 self.TouringBikes += numOfBikes
                 self.stock += numOfBikes
 

@@ -3,9 +3,6 @@ import datetime
 from datetime import datetime, timedelta
 from bikerental import BikeRental
 from customer import Customer
-#/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#WORK IN PROGRESS
-#/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #************************************************
 #//Base Class: Menu
 #
@@ -20,6 +17,7 @@ class Menu(object):
     #************************************************ 
     def Run(self):
         self.Menu()
+
         global strValidated 
         
         strValidated = bool(False)
@@ -240,13 +238,12 @@ class RentalMenu(Menu):
 """)
 
     #************************************************
-    #//Function ShowInventory
+    #//Function GetRentalBasis
     #
     #************************************************ 
     def RentalHourlyBasis(self):
         choice = 1
         self.customers[self.id].getRentalBasis(choice)
-  
         if choice == 1:
             basis = "Hourly"
         print("\n")
@@ -295,7 +292,7 @@ class RentalMenu(Menu):
         return 
 
     #************************************************
-    #//Function ShowInventory
+    #//Function GetBikeModel
     #
     #************************************************ 
     def MountainBike(self): 
@@ -342,7 +339,7 @@ class RentalMenu(Menu):
 
         return 
     #************************************************
-    #//Function ShowInventory
+    #//Function GetNumberOfBikes
     #
     #************************************************ 
     def GetNumberOfBikes(self):
@@ -354,7 +351,7 @@ class RentalMenu(Menu):
             if self.customers[self.id].bikes > 0:
                 blnSwitch = False
     #************************************************
-    #//Function ShowInventory
+    #//Function GetRentalTime
     #
     #************************************************         
 
@@ -424,79 +421,115 @@ class RentalMenu(Menu):
             print("Input Must be Numeric")
         
     #************************************************
-    #// 
+    #// CloseShop
     #
     #************************************************ 
     def CloseShop(self):
       ShopIncome = "${:,.2f}".format(self.Shop.income)
       bikesRented = self.Shop.bikesRented
       Customers = len(self.customers)
-      #  
-       #self.Shop.showIncome()
+      StartUpInventory = self.Shop.StartUpInventory
+      CurrentInventory = self.Shop.stock
+      MountainBikeInventory = self.Shop.MountainBikes
+      RoadBikesInventory = self.Shop.RoadBikes
+      TouringBikesInventory = self.Shop.TouringBikes
+
+
+      print("\n")
+      print("____________________________________________")
+      print("Today's Information Collected")  
+      print("--------------------------------------------")
       print(f"Todays Income: {ShopIncome}")
       print(f"Number of Bikes Rented Today: {bikesRented}")
       print(f"Number of Customers Today {Customers}")
+      print("____________________________________________")
+
+
+      print("\n")
+      print("____________________________________________")
+      print("- Inventory")
+      print("--------------------------------------------")
+      print(f"Start of Day Inventory Count: {StartUpInventory}")
+      print(f"Current Inventory Count: {CurrentInventory}")
+      print(f"----------------------")
+      print(f"-Mountain Bike Inventory: {MountainBikeInventory}")
+      print(f"-Road Bikes Inventory: {RoadBikesInventory}")
+      print(f"-Touring Bikes Inventory: {TouringBikesInventory}")
+      print("____________________________________________")
+      print("\n")
+      print("__________________________________________________________________________________")
+      print("-Customers Who Have Not Returned Bikes")
+      print("----------------------------------------------------------------------------------")
+      for customers in self.customers:
+            if customers.Ticket != "":
+                print(f"-Customer - Name: {customers.name}, ID: {customers.id}, BikeModel: {customers.bikeModelRented}, BikesRented: {customers.bikes}")
+                print("----------------------------------------------------------------------------------")
+
+      print("__________________________________________________________________________________")
+      
+
 
       self.Exit()
         
     #************************************************
-    #// 
+    #// rentalReturn
     #
     #************************************************ 
     def rentalReturn(self):
 
-       request = [0,0,0]
-       
        print(f"\n")
-       print("Enter Your Customer Information To Return Bike")
-
+       print("Enter Your Customer Information To Return Bike") #Get Customer Information
        while True:
            try:
-                Name = str(input("Enter Your Name: "))
-                c_ID = int(input("Enter Your ID: "))
+                customer_name = str(input("Enter Your customer name: ")) 
+                customer_id = int(input("Enter Your ID: "))
                 break
            except ValueError:
                print("Customer ID must be a number")
                print("\n")
 
+       if len(self.customers) == 0: #if customer tries to return rental without having any customers registered 
+            print("No Customers Have Made A Rental.")
+       else:
+
+           for customers in self.customers:
+               numbers = []
+               if customers.name == customer_name and customers.id == customer_id: #Look for Customer 
+                   splitTicket = customers.Ticket.split() #Split Customer Ticket into an array
+                   ticketData = [splitTicket[6], splitTicket[9], splitTicket[12], splitTicket[17], splitTicket[20], splitTicket[23], splitTicket[24]] # Get The Information needed from array
+                   name = str(ticketData[0])
+                   id = int(ticketData[1])
+                   rentalBasis = int(ticketData[4])
+                   bikes = int(ticketData[3])
+                   model = str(ticketData[2])
+               
+                   date = (ticketData[5].replace("-", " ")) #Get rid of all - in the string 
+                   time = (ticketData[6]).replace(":" , " ") #Get rid of all : in the string
+                   time2 = time.replace(".", " ") #Get rid of all . in the string
+                   dateList = date.split() #split date into array
+                   time2List = time2.split() # split time2 into array
+               
+                   for i in range(0, len(dateList)): #change all strings in datelist into integers
+                       dateList[i] = int(dateList[i])
+                   for i in range(0, len(time2List)): #change all strings in time2List into integers
+                       time2List[i] = int(time2List[i])
+
+                   rentalTime = datetime(year=dateList[0],month=dateList[1],day=dateList[2],hour=time2List[0],minute=time2List[1],second=time2List[2],microsecond=time2List[3]) #Recreate datetime from data pulled from ticket
+
+                   print(f"Customer {name} Found with Customer ID: {id}") # let customer know they were found  
+                   input("Press [Enter] to Provide Rental Ticket and Return Bike") # Just for display, Ticket is already processed
+                   print(customers.Ticket) # Shows Ticket, mostly for visual purposes for UX
+
+                   request = [rentalTime,rentalBasis,bikes,model] # Create Request
+                   self.Shop.returnBike(request) # Return bike
+                   customers.Ticket = "" # "Rip" Ticket
+
+               elif customers.name != customer_name and customers.id != customer_id: # if Customers input does not match any customers in the list
+                   request = [0,0,0,""] # Empty Request
+                   self.Shop.returnBike(request) # Tries to return bike will fail and prompt you to go back to main menu
+                   #
            
-       for customers in self.customers:
-           numbers = []
-           if customers.name == Name and customers.id == c_ID:
-               input("Press [Enter] to Provide Rental Ticket and Return Bike")
-               print(customers.Ticket)
-
-               wordList = customers.Ticket.split()
-               TicketInformation = [wordList[6], wordList[9], wordList[12], wordList[17], wordList[20], wordList[23], wordList[24]]
-               #
-               wordListLength = len(wordList)
-               #
-               name = str(TicketInformation[0])
-               id = int(TicketInformation[1])
-               print(f"\n")
-               print(f"Customer {name} Found with Customer ID: {id}")
-
-               date1 = (TicketInformation[5].replace("-", " "))
-               date2 = (TicketInformation[6]).replace(":" , " ")
-               date3 = date2.replace(".", " ")
                
-               date1List = date1.split()
-               date2List = date2.split()
-               date3List = date3.split()
-               
-               for i in range(0, len(date1List)):
-                   date1List[i] = int(date1List[i])
-               for i in range(0, len(date3List)):
-                   date3List[i] = int(date3List[i])
-
-               realDateTime = datetime(year=date1List[0],month=date1List[1],day=date1List[2],hour=date3List[0],minute=date3List[1],second=date3List[2],microsecond=date3List[3])
-               rentalbasis = int(TicketInformation[4])
-               bikes = int(TicketInformation[3])
-               model = str(TicketInformation[2])
-               request = [realDateTime,rentalbasis,bikes,model]
-               self.Shop.returnBike(request)
-               #
-
        
        input("Press [Enter] To Go Back To The Main Menu")
        RentalMenu(self.Shop).Run()
@@ -536,15 +569,14 @@ ________________________________________________
                 self.customers.pop()
              else:
                 print("Here's Your Rental Ticket")
-
                 print(ticket)
+
         elif customer.rentalBasis == 2:
-             if self.Shop.rentBikeOnHourlyBasis(bikes,model) == True:
+             if self.Shop.rentBikeOnDailyBasis(bikes,model) == True:
                 print("pop")
                 self.customers.pop()
              else:
                 print("Here's Your Rental Ticket")
-
                 print(ticket)
 
         elif customer.rentalBasis == 3:
